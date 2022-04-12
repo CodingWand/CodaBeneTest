@@ -23,9 +23,9 @@ class _ListScreenState extends State<ListScreen> {
         centerTitle: true,
       ),
       body: Container(
-        child: Center(
-          child: Text("Il n'y a pas de date de péremption, ajoutez en une !")
-        ),
+        child: (dataset.isEmpty) ? Center(
+          child: Text( "Il n'y a pas de date de péremption, ajoutez en une !")
+        ) : Container(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){

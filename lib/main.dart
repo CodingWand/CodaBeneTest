@@ -1,6 +1,6 @@
 import 'package:codabenetest/listScreen.dart';
+import 'package:codabenetest/modificationScreen.dart';
 import 'package:flutter/material.dart';
-import 'listScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,10 +16,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      initialRoute: '/',
+      initialRoute: HomePage.routeName,
       routes: {
-        '/' : (context) => HomePage(),
-        '/ListScreen' : (context) => ListScreen(),
+        HomePage.routeName : (context) => HomePage(),
+        ListScreen.routeName : (context) => ListScreen(),
+        ModificationScreen.routeName : (context) => ModificationScreen()
       },
     );
   }
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  static const routeName = "/";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +52,7 @@ class HomePage extends StatelessWidget {
             child: Center(
                 child: TextButton(
                   onPressed: (){
-                    Navigator.pushNamed(context, "/ListScreen");
+                    Navigator.popAndPushNamed(context, ListScreen.routeName);
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.amber),

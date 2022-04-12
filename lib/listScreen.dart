@@ -1,13 +1,17 @@
+import 'package:codabenetest/modificationScreen.dart';
 import 'package:flutter/material.dart';
 
 class ListScreen extends StatelessWidget {
   const ListScreen({Key? key}) : super(key: key);
+
+  static const routeName = "/ListScreen";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Vos produits"),
+        centerTitle: true,
       ),
       body: Container(
         child: Center(
@@ -15,7 +19,9 @@ class ListScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+          Navigator.pushNamed(context, ModificationScreen.routeName);
+        },
         child: const Icon(Icons.add),
       ),
     );

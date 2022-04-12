@@ -1,4 +1,6 @@
+import 'package:codabenetest/listScreen.dart';
 import 'package:flutter/material.dart';
+import 'listScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,7 +9,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,14 +16,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: const HomePage(),
+      initialRoute: '/',
+      routes: {
+        '/' : (context) => HomePage(),
+        '/ListScreen' : (context) => ListScreen(),
+      },
     );
   }
 }
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +47,9 @@ class HomePage extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 100),
             child: Center(
                 child: TextButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.pushNamed(context, "/ListScreen");
+                  },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.amber),
                   ),

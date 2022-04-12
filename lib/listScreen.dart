@@ -1,10 +1,19 @@
 import 'package:codabenetest/modificationScreen.dart';
 import 'package:flutter/material.dart';
 
-class ListScreen extends StatelessWidget {
+class ListScreen extends StatefulWidget {
   const ListScreen({Key? key}) : super(key: key);
 
   static const routeName = "/ListScreen";
+
+  @override
+  State<ListScreen> createState() => _ListScreenState();
+}
+
+class _ListScreenState extends State<ListScreen> {
+  Map<String, DateTime> dataset = {};
+
+  bool creation = true;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +29,7 @@ class ListScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.pushNamed(context, ModificationScreen.routeName);
+          Navigator.pushNamed(context, ModificationScreen.routeName, arguments: ModificationScreenArguments(dataset, creation));
         },
         child: const Icon(Icons.add),
       ),

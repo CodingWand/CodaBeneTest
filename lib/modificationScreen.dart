@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
-class ModificationScreen extends StatefulWidget {
-
-  //Modify the code here because the app need the dataset and the creation boolean
-  Map<String, DateTime>? dataset;
-  bool? creation;
+class ModificationScreenArguments
+{
+  Map<String, DateTime> dataset;
+  bool creation;
   String? gtinCode;
 
-  static const routeName = "/ModificationScreen";
+  ModificationScreenArguments(this.dataset, this.creation);
+}
 
-  ModificationScreen({this.dataset, this.creation, this.gtinCode, Key? key}) : super(key: key);
+class ModificationScreen extends StatefulWidget {
+
+  ModificationScreen({Key? key}) : super(key: key);
+
+  static const routeName = "/ModificationScreen";
 
   @override
   State<ModificationScreen> createState() => _ModificationScreenState();
@@ -19,12 +23,14 @@ class _ModificationScreenState extends State<ModificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var args = ModalRoute.of(context)!.settings.arguments as ModificationScreenArguments;
+
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
             Center(
-              child: Text("Ajout d'une référence"),//Text(this.widget.creation ? "Ajout d'une référence" : "Modification"),
+              child: Text(args.creation ? "Ajout d'un référence" : "${args.gtinCode}"),
             )
           ],
         ),

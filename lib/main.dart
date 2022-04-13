@@ -36,7 +36,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          Expanded(
+          const Expanded(
             child: Center(
               child: Text(
                 "Bienvenue",
@@ -48,7 +48,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(bottom: 100),
+            padding: const EdgeInsets.all(100),
             child: Center(
                 child: TextButton(
                   onPressed: (){
@@ -57,9 +57,9 @@ class HomePage extends StatelessWidget {
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.amber),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Commencer",
-                    style: TextStyle(fontSize: 25, color: Colors.white,),
+                    style: TextStyle(fontSize: 30, color: Colors.white,),
                   ),
                 )
             ),

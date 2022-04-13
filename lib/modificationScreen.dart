@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-import 'listScreen.dart';
 
 class ModificationScreenArguments {
   Map<String, DateTime> dataset;
@@ -52,13 +51,13 @@ class _ModificationScreenState extends State<ModificationScreen> {
                     children: [
                       TextFormField(
                         decoration:
-                            textInputDecoration.copyWith(hintText: "GTIN"),
+                            textInputDecoration.copyWith(labelText: "GTIN"),
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.digitsOnly
                         ],
                         validator: (value) {
-                          if (value == null) {
+                          if (value == null || value == "") {
                             return "Il faut renseigner ce champ";
                           }
                           setState(() {
@@ -66,6 +65,7 @@ class _ModificationScreenState extends State<ModificationScreen> {
                           });
                         },
                       ),
+                      const SizedBox(height: 30,),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -104,6 +104,7 @@ class _ModificationScreenState extends State<ModificationScreen> {
             ),
             ElevatedButton(
                 onPressed: () {
+                  if(gtinCode == "") return;
                   if (_formKey.currentState!.validate()) {
                     if(args.dataset.containsKey(gtinCode)) {
                       DateTime? currentExpiryDate = args.dataset[gtinCode];
@@ -116,12 +117,7 @@ class _ModificationScreenState extends State<ModificationScreen> {
                     } else {
                       args.dataset[gtinCode] = expiryDate;
                     }
-                    debugPrint("dataset : ${args.dataset}");
-                    Navigator.popAndPushNamed(
-                        context,
-                        ListScreen.routeName,
-                    );
-                    //Navigator.of(context).pop();
+                    Navigator.pop(context);
                   }
                 },
                 child: Text(args.creation ? "Enregistrer" : "Modifier")),

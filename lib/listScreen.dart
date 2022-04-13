@@ -64,7 +64,7 @@ class _ListScreenState extends State<ListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.popAndPushNamed(
+          Navigator.pushNamed(
               context,
               ModificationScreen.routeName,
               arguments: ModificationScreenArguments(dataset, creation)

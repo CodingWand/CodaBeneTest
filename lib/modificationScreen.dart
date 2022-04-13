@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import 'listScreen.dart';
+
 class ModificationScreenArguments {
   Map<String, DateTime> dataset;
   bool creation;
@@ -52,9 +54,13 @@ class _ModificationScreenState extends State<ModificationScreen> {
                         decoration:
                             textInputDecoration.copyWith(hintText: "GTIN"),
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         validator: (value) {
-                          if (value == null)
+                          if (value == null) {
                             return "Il faut renseigner ce champ";
+                          }
                           setState(() {
                             gtinCode = value;
                           });
@@ -111,7 +117,11 @@ class _ModificationScreenState extends State<ModificationScreen> {
                       args.dataset[gtinCode] = expiryDate;
                     }
                     debugPrint("dataset : ${args.dataset}");
-                    Navigator.of(context).pop();
+                    Navigator.popAndPushNamed(
+                        context,
+                        ListScreen.routeName,
+                    );
+                    //Navigator.of(context).pop();
                   }
                 },
                 child: Text(args.creation ? "Enregistrer" : "Modifier")),

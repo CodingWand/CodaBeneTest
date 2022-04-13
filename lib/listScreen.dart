@@ -7,12 +7,14 @@ class ListScreen extends StatefulWidget {
 
   static const routeName = "/ListScreen";
 
+  static Map<String, DateTime> dataset = {};
+
   @override
   State<ListScreen> createState() => _ListScreenState();
 }
 
 class _ListScreenState extends State<ListScreen> {
-  Map<String, DateTime> dataset = {};
+  Map<String, DateTime> dataset = ListScreen.dataset;
 
   bool creation = true;
 
@@ -62,7 +64,11 @@ class _ListScreenState extends State<ListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.pushNamed(context, ModificationScreen.routeName, arguments: ModificationScreenArguments(dataset, creation));
+          Navigator.popAndPushNamed(
+              context,
+              ModificationScreen.routeName,
+              arguments: ModificationScreenArguments(dataset, creation)
+          );
         },
         child: const Icon(Icons.add),
       ),

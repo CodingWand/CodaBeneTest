@@ -1,3 +1,4 @@
+import 'package:codabenetest/tools.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -41,48 +42,54 @@ class _ModificationScreenState extends State<ModificationScreen> {
             Expanded(
               child: Form(
                 key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    TextFormField(
-                      decoration: const InputDecoration(
-                          hintText: "nombre GTIN", labelText: "GTIN"),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null) return "Il faut renseigner ce champ";
-                        setState(() {
-                          gtinCode = value;
-                        });
-                      },
-                    ),
-                    TextFormField(
-                      onTap: () async {
-                        DateTime? tmpDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(DateTime.now().year + 100));
-                        if(tmpDate != null) {
-                          expiryDate = tmpDate;
-                        }
-                      },
-                      decoration:
-                          const InputDecoration(labelText: "Date d'expiration"),
-                      keyboardType: TextInputType.datetime,
-                      initialValue: DateFormat.yMd().format(expiryDate),
-                      validator: (value) {
-                        if (value != null) {
-                          DateTime tmpDate = DateTime.parse(value);
-                          if (DateTimeRange(start: DateTime.now(), end: tmpDate)
-                                  .duration
-                                  .inDays <
-                              0) return "Renseignez une date valide";
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      TextFormField(
+                        decoration: textInputDecoration.copyWith(hintText: "GTIN"),
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null) return "Il faut renseigner ce champ";
                           setState(() {
-                            expiryDate = tmpDate;
+                            gtinCode = value;
                           });
-                        } else {
-                          return "Renseignez ce champ";
-                        }
-                      },
-                    ),
-                  ],
+                        },
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Date d'expiration"
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                  DateFormat.yMMMMEEEEd().format(expiryDate)//DateFormat.yMd().format(expiryDate)
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  DateTime? tmpDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(DateTime.now().year + 100));
+                                  if (tmpDate != null) {
+                                    setState(() {
+                                      expiryDate = tmpDate;
+                                    });
+                                  }
+                                },
+                                child: const Icon(
+                                  Icons.calendar_today,
+                                  color: Colors.amber,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

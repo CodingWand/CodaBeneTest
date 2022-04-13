@@ -7,14 +7,14 @@ class ListScreen extends StatefulWidget {
 
   static const routeName = "/ListScreen";
 
-  static Map<String, DateTime> dataset = {};
+  //static Map<String, DateTime> dataset = {};
 
   @override
   State<ListScreen> createState() => _ListScreenState();
 }
 
 class _ListScreenState extends State<ListScreen> {
-  Map<String, DateTime> dataset = ListScreen.dataset;
+  Map<String, DateTime> dataset = {};
 
   bool creation = true;
 
@@ -26,6 +26,7 @@ class _ListScreenState extends State<ListScreen> {
 
   Container showDataset() {
     return Container(
+      key: ValueKey<int>(dataset.length),
       padding: const EdgeInsets.all(8),
       child: ListView.builder(
         itemCount: dataset.length,
@@ -64,11 +65,16 @@ class _ListScreenState extends State<ListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.pushNamed(
-              context,
-              ModificationScreen.routeName,
-              arguments: ModificationScreenArguments(dataset, creation)
-          );
+          showModalBottomSheet(context: context, builder: (context) {
+            return Container(
+              child: ModificationScreen(dataset),
+            );
+          });
+          // Navigator.pushNamed(
+          //     context,
+          //     ModificationScreen.routeName,
+          //     arguments: ModificationScreenArguments(dataset, creation)
+          // );
         },
         child: const Icon(Icons.add),
       ),

@@ -49,10 +49,12 @@ class _ModificationScreenState extends State<ModificationScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: "GTIN"),
+                        decoration:
+                            textInputDecoration.copyWith(hintText: "GTIN"),
                         keyboardType: TextInputType.number,
                         validator: (value) {
-                          if (value == null) return "Il faut renseigner ce champ";
+                          if (value == null)
+                            return "Il faut renseigner ce champ";
                           setState(() {
                             gtinCode = value;
                           });
@@ -61,18 +63,19 @@ class _ModificationScreenState extends State<ModificationScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Date d'expiration"
-                          ),
+                          const Text("Date d'expiration"),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                  DateFormat.yMMMMEEEEd().format(expiryDate)//DateFormat.yMd().format(expiryDate)
-                              ),
+                              Text(DateFormat.yMMMMEEEEd().format(expiryDate)),
                               TextButton(
                                 onPressed: () async {
-                                  DateTime? tmpDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(DateTime.now().year + 100));
+                                  DateTime? tmpDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now(),
+                                      lastDate:
+                                          DateTime(DateTime.now().year + 100));
                                   if (tmpDate != null) {
                                     setState(() {
                                       expiryDate = tmpDate;
@@ -94,15 +97,29 @@ class _ModificationScreenState extends State<ModificationScreen> {
               ),
             ),
             ElevatedButton(
-                onPressed: () {},
-                child: Text(args.creation ? "Enregistrer" : "Modifier")
-            ),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    if(args.dataset.containsKey(gtinCode)) {
+                      DateTime? currentExpiryDate = args.dataset[gtinCode];
+                      if(currentExpiryDate != null) {
+                        DateTimeRange timeRange = DateTimeRange(start: currentExpiryDate, end: expiryDate);
+                        if(timeRange.duration.isNegative) {
+                          args.dataset[gtinCode] = expiryDate;
+                        }
+                      }
+                    } else {
+                      args.dataset[gtinCode] = expiryDate;
+                    }
+                    debugPrint("dataset : ${args.dataset}");
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: Text(args.creation ? "Enregistrer" : "Modifier")),
             ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text("Annuler")
-            )
+                child: Text("Annuler"))
           ],
         ),
       ),

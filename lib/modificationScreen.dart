@@ -1,4 +1,3 @@
-import 'package:codabenetest/listScreen.dart';
 import 'package:codabenetest/tools.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,19 +5,15 @@ import 'package:intl/intl.dart';
 
 
 class ModificationScreenArguments {
-  Map<String, DateTime> dataset;
-  bool creation;
-  String? gtinCode;
+  final Map<String, DateTime> dataset;
 
-  ModificationScreenArguments(this.dataset, this.creation);
+  ModificationScreenArguments(this.dataset);
 }
 
 class ModificationScreen extends StatefulWidget {
-  ModificationScreen(this.dataset, {Key? key}) : super(key: key);
+  const ModificationScreen({Key? key}) : super(key: key);
 
   static const routeName = "/ModificationScreen";
-
-  Map<String, DateTime> dataset = {};
 
   @override
   State<ModificationScreen> createState() => _ModificationScreenState();
@@ -32,15 +27,14 @@ class _ModificationScreenState extends State<ModificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // var args = ModalRoute.of(context)!.settings.arguments
-    //     as ModificationScreenArguments;
+    var args = ModalRoute.of(context)!.settings.arguments
+         as ModificationScreenArguments;
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            Center(
-              child: Text(
-                  false ? "Ajout d'une référence" : "${gtinCode}"),
+            const Center(
+              child: Text("Ajout d'une référence"),
             ),
             Expanded(
               child: Form(
@@ -108,19 +102,19 @@ class _ModificationScreenState extends State<ModificationScreen> {
                 onPressed: () {
                   //if(gtinCode == "") return;
                   if (_formKey.currentState!.validate()) {
-                    if(widget.dataset.containsKey(gtinCode)) {
-                      DateTime? currentExpiryDate = widget.dataset[gtinCode];
+                    if(args.dataset.containsKey(gtinCode)) {
+                      DateTime? currentExpiryDate = args.dataset[gtinCode];
                       if(currentExpiryDate != null) {
                         DateTimeRange timeRange = DateTimeRange(start: currentExpiryDate, end: expiryDate);
                         if(timeRange.duration.isNegative) {
                           setState(() {
-                            widget.dataset[gtinCode] = expiryDate;
+                            args.dataset[gtinCode] = expiryDate;
                           });
                         }
                       }
                     } else {
                       setState(() {
-                        widget.dataset[gtinCode] = expiryDate;
+                        args.dataset[gtinCode] = expiryDate;
                       });
                     }
                     Navigator.pop(context);
@@ -128,12 +122,12 @@ class _ModificationScreenState extends State<ModificationScreen> {
                     debugPrint("Erreur de validation !");
                   }
                 },
-                child: Text(true ? "Enregistrer" : "Modifier")),
+                child: const Text("Enregistrer")),
             ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text("Annuler"))
+                child: const Text("Annuler"))
           ],
         ),
       ),

@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       routes: {
         HomePage.routeName : (context) => HomePage(),
         ListScreen.routeName : (context) => ListScreen(),
-        //ModificationScreen.routeName : (context) => ModificationScreen()
+        ModificationScreen.routeName : (context) => ModificationScreen()
       },
     );
   }

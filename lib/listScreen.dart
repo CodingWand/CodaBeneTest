@@ -1,3 +1,4 @@
+import 'package:codabenetest/modificationScreen.dart';
 import 'package:codabenetest/tools.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,8 +9,6 @@ class ListScreen extends StatefulWidget {
 
   static const routeName = "/ListScreen";
 
-  //static Map<String, DateTime> dataset = {};
-
   @override
   State<ListScreen> createState() => _ListScreenState();
 }
@@ -18,7 +17,8 @@ class _ListScreenState extends State<ListScreen> {
   Map<String, DateTime> dataset = {};
   final _formKey = GlobalKey<FormState>();
 
-  bool creation = true;
+  DateTime expiryDate = DateTime.now();
+  String gtinCode = "";
 
   Center emptyDatasetScreen() {
     return const Center(
@@ -54,9 +54,6 @@ class _ListScreenState extends State<ListScreen> {
   }
 
   Widget showModificationScreen() {
-    DateTime expiryDate = DateTime.now();
-    String gtinCode = "";
-
     return ListView(
       children: [
         Center(
@@ -129,6 +126,7 @@ class _ListScreenState extends State<ListScreen> {
             onPressed: () {
               //if(gtinCode == "") return;
               if (_formKey.currentState!.validate()) {
+                String message = "";
                 if(dataset.containsKey(gtinCode)) {
                   DateTime? currentExpiryDate = dataset[gtinCode];
                   if(currentExpiryDate != null) {
@@ -137,13 +135,16 @@ class _ListScreenState extends State<ListScreen> {
                       setState(() {
                         dataset[gtinCode] = expiryDate;
                       });
+                      message = "La référence a bien été modifiée";
                     }
                   }
                 } else {
                   setState(() {
                     dataset[gtinCode] = expiryDate;
                   });
+                  message = "La référence a été ajoutée avec succès";
                 }
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
                 Navigator.pop(context);
               } else {
                 debugPrint("Erreur de validation !");
@@ -171,9 +172,7 @@ class _ListScreenState extends State<ListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          showModalBottomSheet(context: context, builder: (context) {
-            return showModificationScreen();
-          });
+          Navigator.pushNamed(context, ModificationScreen.routeName, arguments: ModificationScreenArguments(dataset));
         },
         child: const Icon(Icons.add),
       ),

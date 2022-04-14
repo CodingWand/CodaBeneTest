@@ -33,8 +33,8 @@ class _ModificationScreenState extends State<ModificationScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const Center(
-              child: Text("Ajout d'une référence"),
+            Center(
+              child: Text("Ajout d'une référence", style: Theme.of(context).textTheme.headline2, textAlign: TextAlign.center,),
             ),
             Expanded(
               child: Form(
@@ -62,11 +62,11 @@ class _ModificationScreenState extends State<ModificationScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("Date d'expiration"),
+                          const Text("Date d'expiration", style: TextStyle(fontSize: 15, color: Colors.black),),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(DateFormat.yMMMMEEEEd().format(expiryDate)),
+                              Text(DateFormat.yMMMMEEEEd().format(expiryDate), style: TextStyle(fontSize: 15, color: Colors.black),),
                               TextButton(
                                 onPressed: () async {
                                   DateTime? tmpDate = await showDatePicker(

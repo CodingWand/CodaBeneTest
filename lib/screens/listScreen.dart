@@ -18,8 +18,12 @@ class _ListScreenState extends State<ListScreen> {
   String gtinCode = "";
 
   Center emptyDatasetScreen() {
-    return const Center(
-        child: Text( "Il n'y a pas de date de péremption, ajoutez en une !")
+    return Center(
+        child: Text(
+          "Il n'y a pas de date de péremption, ajoutez en une ! (et n'oubliez pas de recharger la page)",
+          style: TextStyle(color: Colors.black, fontSize: 20),
+          textAlign: TextAlign.center,
+        )
     );
   }
 
@@ -51,7 +55,7 @@ class _ListScreenState extends State<ListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Vos produits"),
+        title: Text("Vos produits", style: Theme.of(context).textTheme.bodyText1,),
         centerTitle: true,
         actions: [
           IconButton(

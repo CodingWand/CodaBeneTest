@@ -86,6 +86,15 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  #
+  fonts:
+    - family: JosefinSans
+      fonts:
+        - asset: fonts/Josefin_Sans/static/JosefinSans-Regular.ttf
+    - family: Cardo
+      fonts:
+        - asset: fonts/Cardo/Cardo-Regular.ttf
+        - asset: fonts/Cardo/Cardo-Bold.ttf
+        - asset: fonts/Cardo/Cardo-Italic.ttf
+          style: italic
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

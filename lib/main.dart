@@ -15,12 +15,29 @@ class MyApp extends StatelessWidget {
       title: 'CodaBeneTest',
       theme: ThemeData(
         primarySwatch: Colors.amber,
+
+        //fontFamily: "Cardo",
+
+        textTheme: const TextTheme(
+          headline1: TextStyle(
+            fontFamily: "JosefinSans",
+            fontSize: 70,
+            color: Colors.amber,
+          ),
+          headline2: TextStyle(
+            fontFamily: "JosefinSans",
+            fontSize: 50,
+            color: Colors.amber,
+          ),
+          bodyText1: TextStyle(fontSize: 20, color: Colors.black),
+          bodyText2: TextStyle(fontSize: 30, color: Colors.white),
+        ),
       ),
       initialRoute: HomePage.routeName,
       routes: {
-        HomePage.routeName : (context) => HomePage(),
-        ListScreen.routeName : (context) => ListScreen(),
-        ModificationScreen.routeName : (context) => ModificationScreen()
+        HomePage.routeName : (context) => const HomePage(),
+        ListScreen.routeName : (context) => const ListScreen(),
+        ModificationScreen.routeName : (context) => const ModificationScreen()
       },
     );
   }
@@ -36,14 +53,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const Expanded(
+          Expanded(
             child: Center(
               child: Text(
                 "Bienvenue",
-                style: TextStyle(
-                  color: Colors.amber,
-                  fontSize: 50,
-                ),
+                style: Theme.of(context).textTheme.headline1,
               ),
             ),
           ),
@@ -57,9 +71,9 @@ class HomePage extends StatelessWidget {
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.amber),
                   ),
-                  child: const Text(
+                  child: Text(
                     "Commencer",
-                    style: TextStyle(fontSize: 30, color: Colors.white,),
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 )
             ),

@@ -102,6 +102,7 @@ class _ModificationScreenState extends State<ModificationScreen> {
                 onPressed: () {
                   //if(gtinCode == "") return;
                   if (_formKey.currentState!.validate()) {
+                    String message = "";
                     if(args.dataset.containsKey(gtinCode)) {
                       DateTime? currentExpiryDate = args.dataset[gtinCode];
                       if(currentExpiryDate != null) {
@@ -110,13 +111,16 @@ class _ModificationScreenState extends State<ModificationScreen> {
                           setState(() {
                             args.dataset[gtinCode] = expiryDate;
                           });
+                          message = "La référence a bien été modifiée";
                         }
                       }
                     } else {
                       setState(() {
                         args.dataset[gtinCode] = expiryDate;
                       });
+                      message = "La référence a été ajoutée avec succès";
                     }
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
                     Navigator.pop(context);
                   } else {
                     debugPrint("Erreur de validation !");

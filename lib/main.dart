@@ -1,5 +1,5 @@
-import 'package:codabenetest/listScreen.dart';
-import 'package:codabenetest/modificationScreen.dart';
+import 'package:codabenetest/screens/listScreen.dart';
+import 'package:codabenetest/screens/modificationScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

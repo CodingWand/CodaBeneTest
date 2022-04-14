@@ -49,9 +49,6 @@ class _ModificationScreenState extends State<ModificationScreen> {
                         decoration:
                             textInputDecoration.copyWith(labelText: "GTIN"),
                         keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
                         validator: (value) {
                           if (value == null || value == "") {
                             return "Il faut renseigner ce champ";
@@ -100,18 +97,20 @@ class _ModificationScreenState extends State<ModificationScreen> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  //if(gtinCode == "") return;
                   if (_formKey.currentState!.validate()) {
                     String message = "";
                     if(args.dataset.containsKey(gtinCode)) {
                       DateTime? currentExpiryDate = args.dataset[gtinCode];
                       if(currentExpiryDate != null) {
-                        DateTimeRange timeRange = DateTimeRange(start: currentExpiryDate, end: expiryDate);
-                        if(timeRange.duration.isNegative) {
+                        debugPrint("Déjà vu !");
+                        var timeDifference = currentExpiryDate.difference(expiryDate);
+                        if(!timeDifference.isNegative) {
                           setState(() {
                             args.dataset[gtinCode] = expiryDate;
                           });
                           message = "La référence a bien été modifiée";
+                        } else {
+                          return;
                         }
                       }
                     } else {

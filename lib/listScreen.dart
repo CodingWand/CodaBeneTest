@@ -1,5 +1,6 @@
-import 'package:codabenetest/modificationScreen.dart';
+import 'package:codabenetest/tools.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class ListScreen extends StatefulWidget {
@@ -15,6 +16,7 @@ class ListScreen extends StatefulWidget {
 
 class _ListScreenState extends State<ListScreen> {
   Map<String, DateTime> dataset = {};
+  final _formKey = GlobalKey<FormState>();
 
   bool creation = true;
 
@@ -45,11 +47,115 @@ class _ListScreenState extends State<ListScreen> {
               ),
             );
           }
-          return Container(
-            child: const Text("Vide"),
-          );
+          return const Text("Vide");
         },
       ),
+    );
+  }
+
+  Widget showModificationScreen() {
+    DateTime expiryDate = DateTime.now();
+    String gtinCode = "";
+
+    return ListView(
+      children: [
+        Center(
+          child: Text("Ajout d'une référence : $gtinCode"),
+        ),
+        Expanded(
+          child: Form(
+            key: _formKey,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TextFormField(
+                    decoration: textInputDecoration.copyWith(labelText: "GTIN"),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    validator: (value) {
+                      if (value == null || value == "") {
+                        return "Il faut renseigner ce champ";
+                      }
+                      setState(() {
+                        gtinCode = value;
+                      });
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 30,),
+                  Column(
+                    key: ValueKey(expiryDate.toString()),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("Date d'expiration"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(DateFormat.yMMMMEEEEd().format(expiryDate)),
+                          TextButton(
+                            onPressed: () async {
+                              DateTime? tmpDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime.now(),
+                                  lastDate:
+                                  DateTime(DateTime.now().year + 100));
+                              if (tmpDate != null) {
+                                setState(() {
+                                  expiryDate = tmpDate;
+                                });
+                              }
+                            },
+                            child: const Icon(
+                              Icons.calendar_today,
+                              color: Colors.amber,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        ElevatedButton(
+            onPressed: () {
+              //if(gtinCode == "") return;
+              if (_formKey.currentState!.validate()) {
+                if(dataset.containsKey(gtinCode)) {
+                  DateTime? currentExpiryDate = dataset[gtinCode];
+                  if(currentExpiryDate != null) {
+                    DateTimeRange timeRange = DateTimeRange(start: currentExpiryDate, end: expiryDate);
+                    if(timeRange.duration.isNegative) {
+                      setState(() {
+                        dataset[gtinCode] = expiryDate;
+                      });
+                    }
+                  }
+                } else {
+                  setState(() {
+                    dataset[gtinCode] = expiryDate;
+                  });
+                }
+                Navigator.pop(context);
+              } else {
+                debugPrint("Erreur de validation !");
+              }
+            },
+            child: const Text("Enregistrer")),
+        ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Annuler"))
+      ],
     );
   }
 
@@ -66,15 +172,8 @@ class _ListScreenState extends State<ListScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           showModalBottomSheet(context: context, builder: (context) {
-            return Container(
-              child: ModificationScreen(dataset),
-            );
+            return showModificationScreen();
           });
-          // Navigator.pushNamed(
-          //     context,
-          //     ModificationScreen.routeName,
-          //     arguments: ModificationScreenArguments(dataset, creation)
-          // );
         },
         child: const Icon(Icons.add),
       ),
